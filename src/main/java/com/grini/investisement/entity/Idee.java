@@ -40,15 +40,16 @@ public class Idee {
 	private int budget;
 	
 	@Column(name = "realise")
-	private boolean realise ;
+	private boolean realise = false ;
 	
-	private int voteCount;
+	private int voteCount = 0;
 	
-	private Instant created;
+	private Instant createdDate;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "descriptionId", nullable = false )
-	private Description description;
+	private String textDescriptif;
+	
+	// url for image or video
+	//private String urlFile;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId", referencedColumnName = "userId")
