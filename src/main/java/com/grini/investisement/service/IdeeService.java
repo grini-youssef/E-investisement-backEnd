@@ -21,6 +21,7 @@ import com.grini.investisement.repository.UserRepository;
 import static java.util.stream.Collectors.toList;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

@@ -19,7 +19,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/idees/")
+@RequestMapping("/api/idees")
 @AllArgsConstructor
 public class IdeeController {
 
