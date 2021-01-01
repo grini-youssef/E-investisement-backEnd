@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.grini.investisement.dto.AuthenticationResponse;
 import com.grini.investisement.dto.LoginRequest;
+import com.grini.investisement.dto.RefreshTokenRequest;
 import com.grini.investisement.dto.RegisterRequest;
 import com.grini.investisement.entity.NotificationEmail;
 import com.grini.investisement.entity.User;
@@ -29,6 +30,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class AuthService {
 	
 	private final PasswordEncoder passwordEncoder;
@@ -37,6 +39,7 @@ public class AuthService {
 	private final MailService mailService;
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider jwtProvider;
+	private final RefreshTokenService refreshTokenService;
 	
 	@Transactional
 	public void signup(RegisterRequest registerRequest) {
@@ -51,7 +54,7 @@ public class AuthService {
         
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
+                user.getEmail(), "Thank you for signing up to E-investisement, " +
                 "please click on the below url to activate your account : " +
                 "http://localhost:8080/api/auth/accountVerification/" + token));
 
@@ -68,7 +71,7 @@ public class AuthService {
     }
 
 	public void verifyAccount(String token) {
-		verificationTokenRepository.findByToken(token);
+		// verificationTokenRepository.findByToken(token);
 		Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         fetchUserAndEnable(verificationToken.orElseThrow(() -> new SpringRedditException("Invalid Token")));
 	}
@@ -89,9 +92,24 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
-		
-        return new AuthenticationResponse(token, loginRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(loginRequest.getUsername())
+                .build();
 	}
+	
+	public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
+    }
 	
 	@Transactional(readOnly = true)
     public User getCurrentUser() {
