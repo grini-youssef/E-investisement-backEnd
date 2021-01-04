@@ -42,8 +42,8 @@ public class IdeeController {
     }
 
     @GetMapping("/by-user/{name}")
-    public ResponseEntity<List<IdeeResponse>> getPostsByUsername(String username) {
-        return status(HttpStatus.OK).body(ideeService.getIdeesByUsername(username));
+    public ResponseEntity<List<IdeeResponse>> getPostsByUsername(@PathVariable String name) {
+        return status(HttpStatus.OK).body(ideeService.getIdeesByUsername(name));
     }
 	
 }

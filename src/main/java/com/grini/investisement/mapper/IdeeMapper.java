@@ -1,5 +1,7 @@
 package com.grini.investisement.mapper;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
@@ -9,6 +11,8 @@ import com.grini.investisement.dto.IdeeResponse;
 import com.grini.investisement.entity.Commune;
 import com.grini.investisement.entity.Idee;
 import com.grini.investisement.entity.User;
+import com.grini.investisement.entity.Vote;
+import com.grini.investisement.entity.VoteType;
 import com.grini.investisement.repository.CommentRepository;
 import com.grini.investisement.repository.VoteRepository;
 import com.grini.investisement.service.AuthService;
@@ -57,6 +61,9 @@ public class IdeeMapper {
 		ideeResponse.setDuration(getDuration(idee));
 		ideeResponse.setVoteCount(idee.getVoteCount());
 		ideeResponse.setPhone(idee.getUser().getPhone());
+		ideeResponse.setUpVote(isPostUpVoted(idee));
+		ideeResponse.setDownVote(isPostDownVoted(idee));
+		
 		
 		
 		return ideeResponse;
@@ -68,6 +75,25 @@ public class IdeeMapper {
 
     String getDuration(Idee idee) {
         return TimeAgo.using(idee.getCreatedDate().toEpochMilli());
+    }
+    
+    boolean isPostUpVoted(Idee idee) {
+        return checkVoteType(idee, VoteType.UPVOTE);
+    }
+
+    boolean isPostDownVoted(Idee idee) {
+        return checkVoteType(idee, VoteType.DOWNVOTE);
+    }
+    
+    private boolean checkVoteType(Idee idee, VoteType voteType) {
+        if (authService.isLoggedIn()) {
+            Optional<Vote> voteForPostByUser =
+                    voteRepository.findTopByIdeeAndUserOrderByVoteIdDesc(idee,
+                            authService.getCurrentUser());
+            return voteForPostByUser.filter(vote -> vote.getVoteType().equals(voteType))
+                    .isPresent();
+        }
+        return false;
     }
 
 }
