@@ -29,6 +29,8 @@ public class IdeeResponse {
     
     private String duration;
     
+    private String phone;
+    
     private boolean upVote;
     
     private boolean downVote;

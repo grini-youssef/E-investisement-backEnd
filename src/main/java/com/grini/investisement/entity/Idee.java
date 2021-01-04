@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,6 +47,7 @@ public class Idee {
 	
 	private Instant createdDate;
 	
+	@Column(columnDefinition="VARCHAR(500)")
 	private String textDescriptif;
 	
 	// url for image or video

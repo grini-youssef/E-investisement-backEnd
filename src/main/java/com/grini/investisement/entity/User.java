@@ -27,7 +27,7 @@ public class User {
 	 
 	 private String email;
 	 
-	 private String contact;
+	 private String phone;
 	 
 	 private Instant created;
 	 

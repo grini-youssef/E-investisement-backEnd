@@ -56,6 +56,7 @@ public class IdeeMapper {
 		ideeResponse.setCommentCount(commentCount(idee));
 		ideeResponse.setDuration(getDuration(idee));
 		ideeResponse.setVoteCount(idee.getVoteCount());
+		ideeResponse.setPhone(idee.getUser().getPhone());
 		
 		
 		return ideeResponse;
