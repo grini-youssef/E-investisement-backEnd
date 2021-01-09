@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjetResponse {
 
-
     private Long idProjet;
 
     private String titre;
@@ -22,8 +21,8 @@ public class ProjetResponse {
 
     private Long turnover;
 
+
     private String userName;
 
     private String commune;
-
 }

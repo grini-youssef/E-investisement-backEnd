@@ -1,6 +1,5 @@
 package com.grini.investisement.mapper;
 
-
 import com.grini.investisement.dto.ProjetRequest;
 import com.grini.investisement.dto.ProjetResponse;
 import com.grini.investisement.entity.Commune;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class ProjetMapper {
+
     @Autowired
     private AuthService authService;
 
@@ -47,7 +47,7 @@ public class ProjetMapper {
         projetResponse.setUserName(projet.getUser().getUsername());
 
 
+
         return projetResponse;
     }
-
 }

@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -52,7 +51,7 @@ public class ProjetService {
 
     @Transactional(readOnly = true)
     public ProjetResponse getProjet(Long id) {
-         Projet projet = projetRepository.findById(id)
+        Projet projet = projetRepository.findById(id)
                 .orElseThrow(() -> new ProjetNotFoundException(id.toString()));
         return projetMapper.mapToDto(projet);
     }
