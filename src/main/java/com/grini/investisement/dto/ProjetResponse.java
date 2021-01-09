@@ -21,6 +21,7 @@ public class ProjetResponse {
 
     private Long turnover;
 
+    private String duration;
 
     private String userName;
 

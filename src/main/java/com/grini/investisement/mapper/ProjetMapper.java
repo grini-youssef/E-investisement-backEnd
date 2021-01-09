@@ -1,8 +1,10 @@
 package com.grini.investisement.mapper;
 
+import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.grini.investisement.dto.ProjetRequest;
 import com.grini.investisement.dto.ProjetResponse;
 import com.grini.investisement.entity.Commune;
+import com.grini.investisement.entity.Idee;
 import com.grini.investisement.entity.Projet;
 import com.grini.investisement.entity.User;
 import com.grini.investisement.service.AuthService;
@@ -45,9 +47,14 @@ public class ProjetMapper {
         projetResponse.setTurnover(projet.getTurnover());
         projetResponse.setCommune(projet.getCommune().getNom());
         projetResponse.setUserName(projet.getUser().getUsername());
+        projetResponse.setDuration(getDuration(projet));
 
 
 
         return projetResponse;
+    }
+
+    String getDuration(Projet projet) {
+        return TimeAgo.using(projet.getDate_created().toEpochMilli());
     }
 }
