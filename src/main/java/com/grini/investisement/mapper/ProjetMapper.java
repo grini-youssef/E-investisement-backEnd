@@ -1,5 +1,6 @@
 package com.grini.investisement.mapper;
 
+
 import com.grini.investisement.dto.ProjetRequest;
 import com.grini.investisement.dto.ProjetResponse;
 import com.grini.investisement.entity.Commune;
@@ -46,10 +47,7 @@ public class ProjetMapper {
         projetResponse.setUserName(projet.getUser().getUsername());
 
 
-
         return projetResponse;
     }
-
-
 
 }

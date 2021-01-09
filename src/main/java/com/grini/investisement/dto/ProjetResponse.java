@@ -22,7 +22,6 @@ public class ProjetResponse {
 
     private Long turnover;
 
-
     private String userName;
 
     private String commune;
